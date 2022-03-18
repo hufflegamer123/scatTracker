@@ -1,0 +1,14 @@
+{
+    "name": "ScatTrack",
+    "description": "Prevent Google, Amazon, and Facebook from tracking you by creating a bunch of noise!  WARNING: this plugin will increase your internet usage/bandwidth.",
+    "version": "0.01",
+    "manifest_version": 3,
+    "permissions": [
+        "storage",
+        "scripting",
+        "webRequest"
+    ],
+    "background": {"service_worker": "scatter.js"},
+    "host_permissions": ["*://*/*"],
+    "options_page": "/options/options.html"
+}
