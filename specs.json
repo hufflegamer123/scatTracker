@@ -1,0 +1,11 @@
+{
+    "settings": {
+
+    },
+    "enabled": true,
+    "scatCount": 5,
+    "wordlist": [
+        "one",
+        "two three"
+    ]
+}
