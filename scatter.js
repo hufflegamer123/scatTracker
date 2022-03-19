@@ -10,30 +10,18 @@ console.log(scatCount);
 console.log(before);
 console.log(after);
 
-chrome.webRequest.onBeforeRequest.addListener(async (req) => {
-    if (req.url.slice(0, 32) === "https://www.google.com/search?q=") {
-        if (wordlist.includes(decodeURIComponent(req.url.slice(32, req.url.length).split("&")[0].replace(spaces, " ")))) {
-            console.log('ayup');
-            return false;
-        }
-        for (let i = 1; i <= before; i++) {
-            let randNum = Math.floor(Math.random() * wordlist.length-1)
-            fetch("https://www.google.com/search?q=" + encodeURIComponent(wordlist[randNum]));
-            console.log(`Valid Search Detected: URL: ${req.url}, ScatNum: ${i}, ScatWord: ${wordlist[randNum]}, after: false`);
-        }
+const spoof = async function (req, order) {
+    if (wordlist.includes(decodeURIComponent(req.url.slice(32, req.url.length).split("&")[0].replace(spaces, " ")))) {
+        console.log('ayup');
+        return false;
     }
-}, {urls: ['*://*/*']});
+    for (let i = 1; i <= order; i++) {
+        let randNum = Math.floor(Math.random() * wordlist.length-1)
+        fetch("https://www.google.com/search?q=" + encodeURIComponent(wordlist[randNum]));
+        console.log(`Valid Search Detected: URL: ${req.url}, ScatNum: ${i}, ScatWord: ${wordlist[randNum]}, after: false`);
+    }
+}
 
-chrome.webRequest.onCompleted.addListener(async (req) => {
-    if (req.url.slice(0, 32) === "https://www.google.com/search?q=") {
-        if (wordlist.includes(decodeURIComponent(req.url.slice(32, req.url.length).split("&")[0].replace(spaces, " ")))) {
-            console.log('ayup');
-            return false;
-        }
-        for (let i = 1; i <= after; i++) {
-            let randNum = Math.floor(Math.random() * wordlist.length-1)
-            fetch("https://www.google.com/search?q=" + encodeURIComponent(wordlist[randNum]));
-            console.log(`Valid Search Detected: URL: ${req.url}, ScatNum: ${i+before}, ScatWord: ${wordlist[randNum]}, after: true`);
-        }
-    }
-}, {urls: ['*://*/*']});
+chrome.webRequest.onBeforeRequest.addListener(spoof(req, before), {urls: ['^https://www\.google\.com/search\?q=']});
+
+chrome.webRequest.onCompleted.addListener(spoof(req, after), {urls: ['*://*/*']});
