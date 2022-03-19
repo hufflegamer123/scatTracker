@@ -17,17 +17,14 @@ const httpGet = function (theUrl) {
 }
 
 chrome.webRequest.onBeforeRequest.addListener(async (req) => {
-    let url;
     if (req.url.slice(0, 32) === "https://www.google.com/search?q=") {
-        // if (req.url === "https://www.google.com/search?q=gaming123") {
-        //     console.log("there is only suffering");
-        //     return "sadness."
-        // }
-        // for (let i = 0; i <= before; i++) {
-        //     console.log('hello!')
-        //     httpGet("https://www.google.com/search?q=gaming123");
-        // }
-        httpGet("https://www.google.com/search?q=gaming123");
+        if (wordlist.includes(req.url.slice(31, req.url.length).split("&")[0])) {
+            return false;
+        }
+        for (let i = 0; i <= before; i++) {
+            console.log('hello!')
+            fetch("https://www.google.com/search?q=" + wordlist[Math.floor(Math.random() * wordlist.length-1)]);
+        }
     }
 }, {urls: ['*://*/*']});
 
