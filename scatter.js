@@ -10,13 +10,6 @@ console.log(scatCount);
 console.log(before);
 console.log(after);
 
-const httpGet = function (theUrl) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", theUrl);
-    xmlHttp.send(null);
-    return xmlHttp.responseText;
-}
-
 chrome.webRequest.onBeforeRequest.addListener(async (req) => {
     if (req.url.slice(0, 32) === "https://www.google.com/search?q=") {
         if (wordlist.includes(decodeURIComponent(req.url.slice(32, req.url.length).split("&")[0].replace(spaces, " ")))) {
